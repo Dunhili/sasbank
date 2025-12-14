@@ -5,6 +5,8 @@ import com.dunhili.sasbank.common.dto.ApiResponse;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController extends BaseController {
 
+    private static final Logger log = LogManager.getLogger(UserController.class);
+
     private final UserService userService;
 
     /**
@@ -27,8 +31,9 @@ public class UserController extends BaseController {
      * @param userId user ID to use for finding the user
      * @return 200 OK response with the user data or 404 Not Found response
      */
-    @GetMapping(path = "", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public ResponseEntity<ApiResponse<User>> getUser(@RequestParam UUID userId) {
+        log.info("Getting user with ID: {}", userId);
         return ok(userService.getUserById(userId));
     }
 
@@ -37,8 +42,14 @@ public class UserController extends BaseController {
      * successfully updated or created.
      * @param user user data to create or update
      */
-    @PostMapping(path = "", consumes = "application/json")
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<ApiResponse<Void>> createOrUpdateUser(@RequestBody User user) {
+        if (user.getId() == null) {
+            log.info("Creating new user");
+        } else {
+            log.info("Updating user: {}", user.getId());
+        }
+
         userService.createOrUpdateUser(user);
         return ok();
     }
@@ -48,8 +59,9 @@ public class UserController extends BaseController {
      * 404 Not Found response if no user is found.
      * @param userId user ID to use for deleting delete
      */
-    @DeleteMapping(path = "")
+    @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestParam UUID userId) {
+        log.info("Deleting user with ID: {}", userId);
         userService.deleteUser(userId);
         return ok();
     }

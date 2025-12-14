@@ -1,18 +1,13 @@
 package com.dunhili.sasbank.common;
 
 import com.dunhili.sasbank.common.dto.ApiResponse;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Base controller class for all REST controllers. Contains additional methods for helping with response entities.
- *
- * Base URL - /restapi
  */
-@RestController
-@RequestMapping("/restapi")
-public class BaseController {
+public abstract class BaseController {
 
     /**
      * Returns a 200 OK response with an empty payload.
@@ -21,7 +16,7 @@ public class BaseController {
      */
     public <T> ResponseEntity<ApiResponse<T>> ok() {
         ApiResponse<T> response = new ApiResponse<>();
-        // set request id
+        response.setRequestId(getRequestId());
         return ResponseEntity.ok(response);
     }
 
@@ -34,7 +29,7 @@ public class BaseController {
     public <T> ResponseEntity<ApiResponse<T>> ok(T payload) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setPayload(payload);
-        // set request id
+        response.setRequestId(getRequestId());
         return ResponseEntity.ok(response);
     }
 
@@ -47,7 +42,7 @@ public class BaseController {
     public <T> ResponseEntity<ApiResponse<T>> badRequest(T payload) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setPayload(payload);
-        // set request id
+        response.setRequestId(getRequestId());
         return ResponseEntity.badRequest().body(response);
     }
 
@@ -58,5 +53,9 @@ public class BaseController {
      */
     public <T> ResponseEntity<T> notFound() {
         return ResponseEntity.notFound().build();
+    }
+
+    private String getRequestId() {
+        return MDC.get("requestId");
     }
 }

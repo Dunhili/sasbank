@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * Wrapper class for audit models. Contains both the data that was audited along with the action taken
  * for each row.
@@ -14,6 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class AuditModelWrapper<T> {
-    private T data;
+    private UUID id;
     private AuditAction auditAction;
+    private T data;
 }

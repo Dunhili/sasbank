@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Service class for validating user data.
@@ -16,6 +17,8 @@ import java.util.List;
 @Service
 @NoArgsConstructor
 public class UserValidationService {
+
+    private static final Pattern SSN_PATTERN = Pattern.compile("^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0000)\\d{4}$");
 
     public void validateUser(User user) {
 
@@ -27,7 +30,7 @@ public class UserValidationService {
             return true;
         }
 
-        return ssn.length() == 11;
+        return SSN_PATTERN.matcher(ssn).matches();
     }
 
     boolean hasOnePrimaryAddress(List<UserAddress> addresses) {
