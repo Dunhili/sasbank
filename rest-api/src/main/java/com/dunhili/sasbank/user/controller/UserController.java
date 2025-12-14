@@ -5,8 +5,7 @@ import com.dunhili.sasbank.common.dto.ApiResponse;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +13,14 @@ import java.util.UUID;
 
 /**
  * Controller for user-related operations.
- *
+ * <p>
  * Base URL - /users
  */
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController extends BaseController {
-
-    private static final Logger log = LogManager.getLogger(UserController.class);
 
     private final UserService userService;
 

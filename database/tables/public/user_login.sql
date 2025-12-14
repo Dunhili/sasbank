@@ -15,3 +15,6 @@ CREATE TABLE public.user_login (
 
 ALTER TABLE public.user_login ADD CONSTRAINT fk_user_id_user_login
 FOREIGN KEY (user_id) REFERENCES public.user_app(id);
+
+ALTER TABLE public.user_login
+ADD CONSTRAINT user_login_user_id_unique UNIQUE (user_id);

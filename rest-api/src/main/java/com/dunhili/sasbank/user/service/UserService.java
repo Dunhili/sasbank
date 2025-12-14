@@ -23,9 +23,7 @@ public class UserService {
      * @return User with the given ID.
      */
     public User getUserById(UUID userId) {
-        User user = new User();
-        user.setId(userId);
-        return user;
+        return userRepository.findUserById(userId).orElse(null);
     }
 
     /**

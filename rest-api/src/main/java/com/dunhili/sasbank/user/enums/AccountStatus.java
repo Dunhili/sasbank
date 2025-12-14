@@ -20,7 +20,7 @@ public enum AccountStatus {
     BANNED;
 
     @JsonCreator
-    public AccountStatus fromString(String accountStatus) {
+    public static AccountStatus fromString(String accountStatus) {
         return Arrays.stream(AccountStatus.values())
                 .filter(status -> status.name().equals(accountStatus))
                 .findFirst()
