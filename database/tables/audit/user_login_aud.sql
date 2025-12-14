@@ -13,6 +13,3 @@ CREATE TABLE audit.user_login_aud (
     updated_at TIMESTAMP,
     updated_by VARCHAR(50)
 );
-
-ALTER TABLE audit.user_login_aud ADD CONSTRAINT fk_user_login_id_user_login_aud
-FOREIGN KEY (user_login_id) REFERENCES public.user_login(id);

@@ -10,6 +10,3 @@ CREATE TABLE audit.user_phone_aud (
     updated_at TIMESTAMP,
     updated_by VARCHAR(50)
 );
-
-ALTER TABLE audit.user_phone_aud ADD CONSTRAINT fk_user_phone_id_user_phone_aud
-FOREIGN KEY (user_phone_id) REFERENCES public.user_phone(id);

@@ -15,6 +15,3 @@ CREATE TABLE audit.user_address_aud (
     updated_at TIMESTAMP,
     updated_by VARCHAR(50)
 );
-
-ALTER TABLE audit.user_address_aud ADD CONSTRAINT fk_user_address_id_user_address_aud
-FOREIGN KEY (user_address_id) REFERENCES public.user_address(id);

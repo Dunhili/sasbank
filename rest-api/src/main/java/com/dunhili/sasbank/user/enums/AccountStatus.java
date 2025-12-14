@@ -11,13 +11,15 @@ import java.util.Arrays;
  *     <li>Inactive</li>
  *     <li>Locked</li>
  *     <li>Banned</li>
+ *     <li>Deleted</li>
  * </ul>
  */
 public enum AccountStatus {
     ACTIVE,
     INACTIVE,
     LOCKED,
-    BANNED;
+    BANNED,
+    DELETED;
 
     @JsonCreator
     public static AccountStatus fromString(String accountStatus) {

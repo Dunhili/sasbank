@@ -46,6 +46,6 @@ public class UserService {
      * @param userId ID of the user to delete.
      */
     public void deleteUser(UUID userId) {
-
+        userRepository.deleteUserById(userId);
     }
 }

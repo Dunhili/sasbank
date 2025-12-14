@@ -40,4 +40,8 @@ public abstract class BaseRepository {
     protected <T> List<T> queryAll(String sql, Map<String, ?> params, RowMapper<T> rowMapper) {
         return jdbcTemplate.query(sql, params, rowMapper);
     }
+
+    protected void update(String sql, Map<String, ?> params) {
+        jdbcTemplate.update(sql, params);
+    }
 }
