@@ -23,7 +23,6 @@ public class User extends BaseDTO {
     private String ssn;
     private Date birthdate;
     private AccountStatus status;
-    private UserLogin login;
     private List<UserPhone> phoneNumbers;
     private List<UserAddress> addresses;
 }
