@@ -3,6 +3,9 @@ package com.dunhili.sasbank.user.repository;
 import com.dunhili.sasbank.common.BaseRepository;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
+import com.dunhili.sasbank.user.dto.UserPhone;
+import com.dunhili.sasbank.user.mapper.UserAddressRowMapper;
+import com.dunhili.sasbank.user.mapper.UserPhoneMapper;
 import com.dunhili.sasbank.user.mapper.UserRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,7 +21,7 @@ import java.util.UUID;
 @Repository
 public class UserRepository extends BaseRepository {
 
-    public UserRepository(NamedParameterJdbcTemplate jdbcTemplate, UserRowMapper userRowMapper) {
+    public UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }
 
@@ -32,8 +35,23 @@ public class UserRepository extends BaseRepository {
         return queryOne(sql, Map.of("userId", userId), UserRowMapper.INSTANCE);
     }
 
-    public List<UserAddress> findAddressByUserId(UUID userId) {
+    public List<UserAddress> findAddressesByUserId(UUID userId) {
+        String sql = """
+            SELECT *
+            FROM public.user_address
+            WHERE user_id = :userId
+        """;
 
+        return queryAll(sql, Map.of("userId", userId), UserAddressRowMapper.INSTANCE);
     }
 
+    public List<UserPhone> findPhoneNumbersByUserId(UUID userId) {
+        String sql = """
+            SELECT *
+            FROM public.user_phone
+            WHERE user_id = :userId
+        """;
+
+        return queryAll(sql, Map.of("userId", userId), UserPhoneMapper.INSTANCE);
+    }
 }

@@ -23,7 +23,14 @@ public class UserService {
      * @return User with the given ID.
      */
     public User getUserById(UUID userId) {
-        return userRepository.findUserById(userId).orElse(null);
+        User user = userRepository.findUserById(userId).orElse(null);
+        if (user == null) {
+            throw new IllegalArgumentException("User with ID " + userId + " not found");
+        }
+
+        user.setAddresses(userRepository.findAddressesByUserId(userId));
+        user.setPhoneNumbers(userRepository.findPhoneNumbersByUserId(userId));
+        return user;
     }
 
     /**
