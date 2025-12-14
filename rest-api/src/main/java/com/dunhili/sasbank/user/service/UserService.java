@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Service class for user data.
+ */
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -14,9 +17,30 @@ public class UserService {
     private final UserValidationService userValidationService;
     private final UserRepository userRepository;
 
+    /**
+     * Returns the user with the given ID.
+     * @param userId ID of the user to return.
+     * @return User with the given ID.
+     */
     public User getUserById(UUID userId) {
         User user = new User();
         user.setId(userId);
         return user;
+    }
+
+    /**
+     * Creates or updates a user based on the given user data.
+     * @param user User data to create or update.
+     */
+    public void createOrUpdateUser(User user) {
+
+    }
+
+    /**
+     * Deletes the user with the given ID.
+     * @param userId ID of the user to delete.
+     */
+    public void deleteUser(UUID userId) {
+
     }
 }

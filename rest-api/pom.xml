@@ -12,6 +12,7 @@
     <maven-compiler-version>3.14.1</maven-compiler-version>
     <spring-framework-version>3.5.8</spring-framework-version>
     <postgresql-version>42.7.8</postgresql-version>
+    <apache-commons-lang-version>3.20.0</apache-commons-lang-version>
   </properties>
 
   <build>
@@ -45,9 +46,33 @@
       <version>${spring-framework-version}</version>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${spring-framework-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.21.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.18.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${apache-commons-lang-version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

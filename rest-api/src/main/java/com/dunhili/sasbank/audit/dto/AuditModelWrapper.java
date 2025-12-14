@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Wrapper class for audit models. Contains both the data that was audited along with the action taken
+ * for each row.
+ * @param <T> Type of data being audited.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

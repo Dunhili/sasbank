@@ -4,6 +4,9 @@ import com.dunhili.sasbank.common.dto.BaseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO representing a user's address.
+ */
 @Getter
 @Setter
 public class UserAddress extends BaseDTO {

@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * DTO representing a user.
+ */
 @Getter
 @Setter
 public class User extends BaseDTO {
