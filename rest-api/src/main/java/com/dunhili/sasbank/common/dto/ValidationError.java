@@ -18,4 +18,8 @@ public class ValidationError {
     public ValidationError(ValidationMessages validation) {
         this(validation.name(), validation.getMessage());
     }
+
+    public ValidationError(ValidationMessages validation, String formattedString) {
+        this(validation.name(), String.format(validation.getMessage(), formattedString));
+    }
 }

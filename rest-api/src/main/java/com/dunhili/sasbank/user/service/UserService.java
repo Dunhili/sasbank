@@ -1,8 +1,11 @@
 package com.dunhili.sasbank.user.service;
 
+import com.dunhili.sasbank.common.enums.ValidationMessages;
+import com.dunhili.sasbank.common.exception.ApiServiceException;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -12,6 +15,7 @@ import java.util.UUID;
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService {
 
     private final UserValidationService userValidationService;
@@ -23,9 +27,10 @@ public class UserService {
      * @return User with the given ID.
      */
     public User getUserById(UUID userId) {
+        log.info("Getting user with ID: {}", userId);
         User user = userRepository.findUserById(userId).orElse(null);
         if (user == null) {
-            throw new IllegalArgumentException("User with ID " + userId + " not found");
+            throw new ApiServiceException(ValidationMessages.USER_NOT_FOUND, 404, userId.toString());
         }
 
         user.setAddresses(userRepository.findAddressesByUserId(userId));
@@ -38,6 +43,25 @@ public class UserService {
      * @param user User data to create or update.
      */
     public void createOrUpdateUser(User user) {
+        if (user.getId() == null) {
+            createUser(user);
+        } else {
+            updateUser(user);
+        }
+    }
+
+    private void createUser(User user) {
+        log.info("Creating new user");
+    }
+
+    private void updateUser(User user) {
+        UUID userId = user.getId();
+        log.info("Updating user: {}", userId);
+
+        if (!userValidationService.isUserExists(userId)) {
+            throw new ApiServiceException(ValidationMessages.USER_NOT_FOUND, 404, userId.toString());
+        }
+
 
     }
 
@@ -46,6 +70,10 @@ public class UserService {
      * @param userId ID of the user to delete.
      */
     public void deleteUser(UUID userId) {
+        log.info("Deleting user with ID: {}", userId);
+        if (!userValidationService.isUserExists(userId)) {
+            throw new ApiServiceException(ValidationMessages.USER_NOT_FOUND, 404, userId.toString());
+        }
         userRepository.deleteUserById(userId);
     }
 }

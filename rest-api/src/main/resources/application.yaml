@@ -1,13 +1,11 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/sas-bank
-    username: postgres
-    password: postgresuser
+  config:
+    import: classpath:environments/
+  profiles:
+    active: local
   mvc:
     servlet:
       path: /restapi
-
-
   jpa:
     hibernate:
       ddl-auto: none

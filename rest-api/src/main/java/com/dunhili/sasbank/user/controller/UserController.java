@@ -19,7 +19,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Slf4j
 public class UserController extends BaseController {
 
     private final UserService userService;
@@ -31,7 +30,6 @@ public class UserController extends BaseController {
      */
     @GetMapping(produces = "application/json")
     public ResponseEntity<ApiResponse<User>> getUser(@RequestParam UUID userId) {
-        log.info("Getting user with ID: {}", userId);
         return ok(userService.getUserById(userId));
     }
 
@@ -42,12 +40,6 @@ public class UserController extends BaseController {
      */
     @PostMapping(consumes = "application/json")
     public ResponseEntity<ApiResponse<Void>> createOrUpdateUser(@RequestBody User user) {
-        if (user.getId() == null) {
-            log.info("Creating new user");
-        } else {
-            log.info("Updating user: {}", user.getId());
-        }
-
         userService.createOrUpdateUser(user);
         return ok();
     }
@@ -59,7 +51,6 @@ public class UserController extends BaseController {
      */
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestParam UUID userId) {
-        log.info("Deleting user with ID: {}", userId);
         userService.deleteUser(userId);
         return ok();
     }

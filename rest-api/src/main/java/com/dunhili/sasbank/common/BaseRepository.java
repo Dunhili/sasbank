@@ -41,7 +41,23 @@ public abstract class BaseRepository {
         return jdbcTemplate.query(sql, params, rowMapper);
     }
 
+    /**
+     * Updates the database using the given SQL query and parameters.
+     * @param sql SQL query to execute.
+     * @param params Parameters to use for the query.
+     */
     protected void update(String sql, Map<String, ?> params) {
         jdbcTemplate.update(sql, params);
+    }
+
+    /**
+     * Checks if a row exists in the database using the given SQL query and parameters.
+     * @param sql SQL query to execute.
+     * @param params Parameters to use for the query.
+     * @return True if a row exists, false otherwise.
+     */
+    protected boolean exists(String sql, Map<String, ?> params) {
+        Boolean result = jdbcTemplate.queryForObject(sql, params, Boolean.class);
+        return result != null && result;
     }
 }

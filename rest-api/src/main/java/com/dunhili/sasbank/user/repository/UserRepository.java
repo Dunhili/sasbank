@@ -34,10 +34,10 @@ public class UserRepository extends BaseRepository {
         String sql = """
             SELECT *
             FROM public.user_app
-            WHERE id = :userId;
+            WHERE id = :userId
         """;
 
-        return queryOne(sql, Map.of("userId", userId), UserRowMapper.INSTANCE);
+        return queryOne(sql, getUserParamMap(userId), UserRowMapper.INSTANCE);
     }
 
     /**
@@ -49,10 +49,10 @@ public class UserRepository extends BaseRepository {
         String sql = """
             SELECT *
             FROM public.user_address
-            WHERE user_id = :userId;
+            WHERE user_id = :userId
         """;
 
-        return queryAll(sql, Map.of("userId", userId), UserAddressRowMapper.INSTANCE);
+        return queryAll(sql, getUserParamMap(userId), UserAddressRowMapper.INSTANCE);
     }
 
     /**
@@ -64,10 +64,10 @@ public class UserRepository extends BaseRepository {
         String sql = """
             SELECT *
             FROM public.user_phone
-            WHERE user_id = :userId;
+            WHERE user_id = :userId
         """;
 
-        return queryAll(sql, Map.of("userId", userId), UserPhoneMapper.INSTANCE);
+        return queryAll(sql, getUserParamMap(userId), UserPhoneMapper.INSTANCE);
     }
 
     /**
@@ -76,9 +76,31 @@ public class UserRepository extends BaseRepository {
      */
     public void deleteUserById(UUID userId) {
         String sql = """
-            DELETE FROM public.user_app WHERE id = :userId;
+            DELETE FROM public.user_app WHERE id = :userId
         """;
 
-        update(sql, Map.of("userId", userId));
+        update(sql, getUserParamMap(userId));
+    }
+
+    /**
+     * Checks if a user with the given ID exists in the database.
+     * @param userId ID of the user to check.
+     * @return True if a user with the given ID exists, false otherwise.
+     */
+    public boolean userExists(UUID userId) {
+        String sql = """
+            SELECT EXISTS(SELECT 1 FROM users WHERE id = :userId)
+        """;
+
+        return exists(sql, getUserParamMap(userId));
+    }
+
+    /**
+     * Creates a parameter map for the given user ID.
+     * @param userId ID of the user to create a parameter map for.
+     * @return Parameter map for the given user ID.
+     */
+    private Map<String, UUID> getUserParamMap(UUID userId) {
+        return Map.of("userId", userId);
     }
 }
