@@ -3,8 +3,7 @@ CREATE TABLE audit.user_login_aud (
     action VARCHAR(6), -- 'INSERT', 'UPDATE', 'DELETE'
     user_login_id UUID NOT NULL,
     username VARCHAR(100) NOT NULL,
-    password_hash TEXT NOT NULL,
-    password_salt TEXT,
+    password TEXT NOT NULL,
     hash_algorithm VARCHAR(50) NOT NULL,
     last_login_date TIMESTAMP,
     password_attempts INTEGER,

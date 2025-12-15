@@ -15,8 +15,7 @@ import java.util.UUID;
 public class UserLogin extends BaseDTO {
     private UUID userId;
     private String username;
-    private String passwordHash;
-    private String passwordSalt;
+    private String password;
     private String hashAlgorithm;
     private Date lastLoginDate;
     private int passwordAttempts;
