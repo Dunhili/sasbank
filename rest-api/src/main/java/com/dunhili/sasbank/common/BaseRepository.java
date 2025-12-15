@@ -1,6 +1,7 @@
 package com.dunhili.sasbank.common;
 
 
+import com.dunhili.sasbank.auth.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -86,13 +87,14 @@ public abstract class BaseRepository {
      * @param isCreate True if the parameters are being added for a create operation, false otherwise.
      */
     protected void addAuditParams(Map<String, Object> params, boolean isCreate) {
+        String userName = AuthUtils.getCurrentUser();
         Date now = new Date();
         if (isCreate) {
             params.put("createdAt", now);
-            params.put("createdBy", "bbowden89");
+            params.put("createdBy", userName);
         }
 
         params.put("updatedAt", now);
-        params.put("updatedBy", "bbowden89");
+        params.put("updatedBy", userName);
     }
 }
