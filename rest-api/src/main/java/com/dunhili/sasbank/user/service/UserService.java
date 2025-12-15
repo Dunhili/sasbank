@@ -49,11 +49,11 @@ public class UserService {
      * @param user User data to create or update.
      */
     @Transactional
-    public void createOrUpdateUser(User user) {
+    public UUID createOrUpdateUser(User user) {
         if (user.getId() == null) {
-            createUser(user);
+            return createUser(user);
         } else {
-            updateUser(user);
+            return updateUser(user);
         }
     }
 
@@ -62,7 +62,7 @@ public class UserService {
      * @param user User data to create.
      */
     @Transactional
-    protected void createUser(User user) {
+    protected UUID createUser(User user) {
         log.info("Creating new user");
         List<ValidationError> validationErrors = userValidationService.validateUser(user);
         if (!CollectionUtils.isEmpty(validationErrors)) {
@@ -83,6 +83,8 @@ public class UserService {
             user.getPhoneNumbers().forEach(userPhoneNumber -> userPhoneNumber.setUserId(userId));
             userRepository.createPhoneNumbers(user.getPhoneNumbers());
         }
+
+        return userId;
     }
 
     /**
@@ -90,7 +92,7 @@ public class UserService {
      * @param user User data to update.
      */
     @Transactional
-    protected void updateUser(User user) {
+    protected UUID updateUser(User user) {
         UUID userId = user.getId();
         log.info("Updating user: {}", userId);
 
@@ -107,6 +109,8 @@ public class UserService {
 
         updateAddresses(user, existingUser);
         updatePhoneNumbers(user, existingUser);
+
+        return userId;
     }
 
     private void updateAddresses(User user, User existingUser) {

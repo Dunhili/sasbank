@@ -39,9 +39,8 @@ public class UserController extends BaseController {
      * @param user user data to create or update
      */
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ApiResponse<Void>> createOrUpdateUser(@RequestBody User user) {
-        userService.createOrUpdateUser(user);
-        return ok();
+    public ResponseEntity<ApiResponse<UUID>> createOrUpdateUser(@RequestBody User user) {
+        return ok(userService.createOrUpdateUser(user));
     }
 
     /**
