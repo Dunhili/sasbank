@@ -308,20 +308,4 @@ public class UserRepository extends BaseRepository {
 
         return params;
     }
-
-    /**
-     * Adds audit parameters to the given parameter map.
-     * @param params Parameter map to add audit parameters to.
-     * @param isCreate True if the parameters are being added for a create operation, false otherwise.
-     */
-    private void addAuditParams(Map<String, Object> params, boolean isCreate) {
-        Date now = new Date();
-        if (isCreate) {
-            params.put("createdAt", now);
-            params.put("createdBy", "bbowden89");
-        }
-
-        params.put("updatedAt", now);
-        params.put("updatedBy", "bbowden89");
-    }
 }

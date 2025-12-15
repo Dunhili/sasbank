@@ -21,8 +21,7 @@ public class UserLoginRowMapper extends BaseMapper implements RowMapper<UserLogi
         mapId(login, rs);
         login.setUserId(rs.getObject("user_id", UUID.class));
         login.setUsername(rs.getString("username"));
-        login.setPasswordHash(rs.getString("password_hash"));
-        login.setPasswordSalt(rs.getString("password_salt"));
+        login.setPassword(rs.getString("password"));
         login.setHashAlgorithm(rs.getString("hash_algorithm"));
         login.setLastLoginDate(rs.getTimestamp("last_login_date"));
         login.setPasswordAttempts(rs.getInt("password_attempts"));

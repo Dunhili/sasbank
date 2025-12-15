@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -77,5 +78,21 @@ public abstract class BaseRepository {
     protected boolean exists(String sql, Map<String, ?> params) {
         Boolean result = jdbcTemplate.queryForObject(sql, params, Boolean.class);
         return result != null && result;
+    }
+
+    /**
+     * Adds audit parameters to the given parameter map.
+     * @param params Parameter map to add audit parameters to.
+     * @param isCreate True if the parameters are being added for a create operation, false otherwise.
+     */
+    protected void addAuditParams(Map<String, Object> params, boolean isCreate) {
+        Date now = new Date();
+        if (isCreate) {
+            params.put("createdAt", now);
+            params.put("createdBy", "bbowden89");
+        }
+
+        params.put("updatedAt", now);
+        params.put("updatedBy", "bbowden89");
     }
 }

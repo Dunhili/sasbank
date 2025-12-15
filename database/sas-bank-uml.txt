@@ -51,8 +51,7 @@ Table public.user_login {
   id uuid [primary key]
   user_id uuid [not null]
   username varchar(100) [not null]
-  password_hash text [not null]
-  password_salt text
+  password text [not null]
   hash_algorithm varchar(50) [not null]
   last_login_date timestamp
   password_attempts integer [not null, default: 0]
@@ -126,8 +125,7 @@ Table audit.user_login_aud {
   user_login_id uuid [not null]
   user_id uuid [not null]
   username varchar(100) [not null]
-  password_hash text [not null]
-  password_salt text
+  password text [not null]
   hash_algorithm varchar(50) [not null]
   last_login_date timestamp
   password_attempts integer [not null, default: 0]
