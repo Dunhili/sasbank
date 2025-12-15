@@ -5,7 +5,7 @@ import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
 import com.dunhili.sasbank.user.mapper.UserAddressRowMapper;
-import com.dunhili.sasbank.user.mapper.UserPhoneMapper;
+import com.dunhili.sasbank.user.mapper.UserPhoneRowMapper;
 import com.dunhili.sasbank.user.mapper.UserRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -64,7 +64,7 @@ public class UserRepository extends BaseRepository {
             WHERE user_id = :userId
         """;
 
-        return queryAll(sql, getUserParamMap(userId), UserPhoneMapper.INSTANCE);
+        return queryAll(sql, getUserParamMap(userId), UserPhoneRowMapper.INSTANCE);
     }
 
     /**

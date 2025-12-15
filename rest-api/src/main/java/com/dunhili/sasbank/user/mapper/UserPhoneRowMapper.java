@@ -12,9 +12,9 @@ import java.util.UUID;
 /**
  * Mapper for the {@link UserPhone} entity.
  */
-public class UserPhoneMapper extends BaseMapper implements RowMapper<UserPhone> {
+public class UserPhoneRowMapper extends BaseMapper implements RowMapper<UserPhone> {
 
-    public static final UserPhoneMapper INSTANCE = new UserPhoneMapper();
+    public static final UserPhoneRowMapper INSTANCE = new UserPhoneRowMapper();
 
     /**
      * Maps a row from the result set to a {@link UserPhone} entity.
