@@ -16,6 +16,13 @@ public class UserRowMapper extends BaseMapper implements RowMapper<User> {
 
     public static final UserRowMapper INSTANCE = new UserRowMapper();
 
+    /**
+     * Maps a row from the result set to a {@link User} entity.
+     * @param rs Result set row to map.
+     * @param rowNum Row number.
+     * @return Mapped user entity.
+     * @throws SQLException if there is an error getting values from the result set.
+     */
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
@@ -26,7 +33,7 @@ public class UserRowMapper extends BaseMapper implements RowMapper<User> {
         user.setGender(Gender.fromString(rs.getString("gender")));
         user.setEmailAddress(rs.getString("email_address"));
         user.setSsn(rs.getString("ssn"));
-        user.setBirthdate(rs.getDate("birthday"));
+        user.setBirthday(rs.getDate("birthday").toLocalDate());
         user.setStatus(AccountStatus.fromString(rs.getString("status")));
         mapAuditRows(user, rs);
         return user;

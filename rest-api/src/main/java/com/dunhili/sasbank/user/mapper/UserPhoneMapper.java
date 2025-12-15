@@ -16,6 +16,13 @@ public class UserPhoneMapper extends BaseMapper implements RowMapper<UserPhone> 
 
     public static final UserPhoneMapper INSTANCE = new UserPhoneMapper();
 
+    /**
+     * Maps a row from the result set to a {@link UserPhone} entity.
+     * @param rs Result set row to map.
+     * @param rowNum Row number.
+     * @return Mapped user phone entity.
+     * @throws SQLException if there is an error getting values from the result set.
+     */
     @Override
     public UserPhone mapRow(ResultSet rs, int rowNum) throws SQLException {
         UserPhone phone = new UserPhone();

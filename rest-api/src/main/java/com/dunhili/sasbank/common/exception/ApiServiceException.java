@@ -16,7 +16,7 @@ public class ApiServiceException extends RuntimeException {
     private final List<ValidationError> validationMessages;
 
     public ApiServiceException(ValidationMessages validationMessage, int httpStatus) {
-        this(validationMessage.name(), validationMessage.getMessage(), httpStatus, List.of());
+        this(validationMessage.name(), validationMessage.getMessage(), httpStatus);
     }
 
     public ApiServiceException(ValidationMessages validationMessage, int httpStatus, String formattedString) {

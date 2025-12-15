@@ -15,6 +15,13 @@ public class UserAddressRowMapper extends BaseMapper implements RowMapper<UserAd
 
     public static final UserAddressRowMapper INSTANCE = new UserAddressRowMapper();
 
+    /**
+     * Maps a row from the result set to a {@link UserAddress} entity.
+     * @param rs Result set row to map.
+     * @param rowNum Row number.
+     * @return Mapped user address entity.
+     * @throws SQLException if there is an error getting values from the result set.
+     */
     @Override
     public UserAddress mapRow(ResultSet rs, int rowNum) throws SQLException {
         UserAddress address = new UserAddress();

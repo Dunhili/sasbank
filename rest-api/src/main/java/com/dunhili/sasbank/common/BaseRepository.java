@@ -51,6 +51,24 @@ public abstract class BaseRepository {
     }
 
     /**
+     * Updates the database in a batch using the given SQL query and batch of parameters.
+     * @param sql SQL query to execute.
+     * @param batch Batch of parameters to use for the query.
+     */
+    protected void batchUpdate(String sql, List<Map<String, Object>> batch) {
+        jdbcTemplate.batchUpdate(sql, batch.toArray(new Map[0]));
+    }
+
+    /**
+     * Deletes from the database using the given SQL query and parameters.
+     * @param sql SQL query to execute.
+     * @param params Parameters to use for the query.
+     */
+    protected void delete(String sql, Map<String, ?> params) {
+        jdbcTemplate.update(sql, params);
+    }
+
+    /**
      * Checks if a row exists in the database using the given SQL query and parameters.
      * @param sql SQL query to execute.
      * @param params Parameters to use for the query.

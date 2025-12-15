@@ -5,7 +5,6 @@ import com.dunhili.sasbank.common.enums.ValidationMessages;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
-import com.dunhili.sasbank.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -22,8 +20,6 @@ import java.util.regex.Pattern;
 @Service
 @AllArgsConstructor
 public class UserValidationService {
-
-    private final UserRepository userRepository;
 
     private static final Pattern SSN_PATTERN = Pattern.compile("^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0000)\\d{4}$");
 
@@ -40,15 +36,6 @@ public class UserValidationService {
             errors.add(new ValidationError(ValidationMessages.USER_EXACTLY_ONE_PRIMARY_PHONE));
         }
         return errors;
-    }
-
-    /**
-     * Checks if a user with the given ID exists.
-     * @param userId ID of the user to check
-     * @return True if a user with the given ID exists, false otherwise.
-     */
-    public boolean isUserExists(UUID userId) {
-        return userRepository.userExists(userId);
     }
 
     /**

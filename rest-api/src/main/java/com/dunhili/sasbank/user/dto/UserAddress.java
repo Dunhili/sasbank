@@ -1,6 +1,7 @@
 package com.dunhili.sasbank.user.dto;
 
 import com.dunhili.sasbank.common.dto.BaseDTO;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class UserAddress extends BaseDTO {
     private UUID userId;
     private String addressLine1;
@@ -20,5 +22,5 @@ public class UserAddress extends BaseDTO {
     private String city;
     private String zipcode;
     private String country;
-    private boolean isPrimary;
+    private boolean primary;
 }

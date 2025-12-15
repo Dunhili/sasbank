@@ -3,8 +3,6 @@ package com.dunhili.sasbank.user.service;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
 import com.dunhili.sasbank.user.repository.UserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 public class UserValidationServiceTest {
 
-    private static final Logger log = LogManager.getLogger(UserValidationServiceTest.class);
-
     @Mock
     private UserRepository userRepository;
 
@@ -38,8 +34,6 @@ public class UserValidationServiceTest {
      */
     @Test
     public void validateSsnTest() {
-        log.info("Running validateSsnTest...");
-
         // ssns can be null or empty as they are optional
         assertTrue(userValidationService.isValidSsn(null));
         assertTrue(userValidationService.isValidSsn(""));

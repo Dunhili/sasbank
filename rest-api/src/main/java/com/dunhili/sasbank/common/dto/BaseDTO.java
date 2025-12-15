@@ -1,5 +1,6 @@
 package com.dunhili.sasbank.common.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public abstract class BaseDTO {
     private UUID id;
     private Date createdAt;

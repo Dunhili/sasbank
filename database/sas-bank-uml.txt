@@ -11,7 +11,7 @@ Table public.user {
   email_address varchar(250)
   ssn varchar(11)
   birthday date
-  status varchar(10) [note: 'ACTIVE, INACTIVE, LOCKED, BANNED']
+  status varchar(10) [note: 'ACTIVE, INACTIVE, LOCKED, BANNED, DELETED']
   created_at timestamp [default: `now()`]
   created_by varchar(50)
   updated_at timestamp [default: `now()`]
@@ -80,7 +80,7 @@ Table audit.user_aud {
   email_address varchar(250)
   ssn varchar(10)
   birthday date
-  status varchar(10) [note: 'ACTIVE, INACTIVE, LOCKED, BANNED']
+  status varchar(10) [note: 'ACTIVE, INACTIVE, LOCKED, BANNED, DELETED']
   created_at timestamp [default: `now()`]
   created_by varchar(50)
   updated_at timestamp [default: `now()`]
@@ -136,11 +136,3 @@ Table audit.user_login_aud {
   updated_at timestamp [default: `now()`]
   updated_by varchar(50)
 }
-
-Ref fk_user_id_user_aud: audit.user_aud.user_id > public.user.id
-
-Ref fk_user_phone_id_user_phone_aud: audit.user_phone_aud.user_phone_id > public.user_phone.id
-
-Ref fk_user_address_id_user_address_aud: audit.user_address_aud.user_address_id > public.user_address.id
-
-Ref fk_user_login_id_user_login_aud: audit.user_login_aud.user_login_id > public.user_login.id

@@ -4,6 +4,9 @@ import com.dunhili.sasbank.common.enums.ValidationMessages;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO representing a validation error.
+ */
 @Getter
 @Setter
 public class ValidationError {
