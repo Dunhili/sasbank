@@ -24,8 +24,8 @@ public class LoginController {
      * @param login User login data to create.
      * @return HTTP 200 OK if the login was created successfully, HTTP 400 Bad Request otherwise.
      */
-    @PostMapping(path = "/create")
-    public ResponseEntity<Void> createLogin(@RequestBody UserLogin login) {
+    @PostMapping
+    public ResponseEntity<Void> createOrUpdateLogin(@RequestBody UserLogin login) {
         userLoginService.createOrUpdateUserLogin(login);
         return ResponseEntity.ok().build();
     }

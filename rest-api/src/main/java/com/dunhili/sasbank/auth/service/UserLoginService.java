@@ -10,6 +10,7 @@ import com.dunhili.sasbank.common.exception.ApiServiceException;
 import com.dunhili.sasbank.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,7 @@ public class UserLoginService {
      * @param user User data to create or update.
      */
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void createOrUpdateUserLogin(UserLogin user) {
         List<ValidationError> errors = userLoginValidationService.validateUserLogin(user);
         if (user.getUserId() != null && !userService.isUserExists(user.getUserId())) {
