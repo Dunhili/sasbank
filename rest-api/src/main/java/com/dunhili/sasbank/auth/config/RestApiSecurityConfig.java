@@ -29,8 +29,7 @@ public class RestApiSecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/restapi/**")
-                    .hasAnyRole(Role.USER.name(), Role.CUSTOMER.name(), Role.MANAGER.name(), Role.ADMIN.name())
+                .requestMatchers("/restapi/**").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults());
