@@ -50,7 +50,7 @@ Table public.user_address {
 Table public.user_login {
   id uuid [primary key]
   user_id uuid [not null]
-  username varchar(100) [not null]
+  username varchar(50) [not null]
   password text [not null]
   hash_algorithm varchar(50) [not null]
   last_login_date timestamp
@@ -61,11 +61,20 @@ Table public.user_login {
   updated_by varchar(50)
 }
 
+Table public.user_role {
+  user_id uuid [not null]
+  role_name varchar(10) [not null]
+  created_at timestamp [default: `now()`]
+  created_by varchar(50)
+}
+
 Ref fk_user_id_user_phone: public.user_phone.user_id > public.user.id
 
 Ref fk_user_id_user_address: public.user_address.user_id > public.user.id
 
 Ref fk_user_id_user_login: public.user_login.user_id > public.user.id
+
+Ref fk_user_id_user_role: public.user_role.user_id > public.user.id
 
 // Audit Tables
 Table audit.user_aud {
@@ -124,7 +133,7 @@ Table audit.user_login_aud {
   action varchar(6) [note: 'INSERT, UPDATE, DELETE']
   user_login_id uuid [not null]
   user_id uuid [not null]
-  username varchar(100) [not null]
+  username varchar(50) [not null]
   password text [not null]
   hash_algorithm varchar(50) [not null]
   last_login_date timestamp
@@ -133,4 +142,13 @@ Table audit.user_login_aud {
   created_by varchar(50)
   updated_at timestamp [default: `now()`]
   updated_by varchar(50)
+}
+
+Table audit.user_role_aud {
+  id uuid [primary key]
+  action varchar(10) [note: 'INSERT, UPDATE, DELETE']
+  user_id uuid [not null]
+  role_name varchar(6) [not null]
+  created_at timestamp [default: `now()`]
+  created_by varchar(50)
 }

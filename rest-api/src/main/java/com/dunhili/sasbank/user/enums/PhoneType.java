@@ -21,9 +21,6 @@ public enum PhoneType {
 
     @JsonCreator
     public static PhoneType fromString(String phoneType) {
-        return Arrays.stream(PhoneType.values())
-                .filter(type -> type.name().equals(phoneType))
-                .findFirst()
-                .orElse(null);
+        return phoneType != null ? PhoneType.valueOf(phoneType.toUpperCase()) : null;
     }
 }

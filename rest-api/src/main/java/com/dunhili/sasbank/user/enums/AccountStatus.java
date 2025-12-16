@@ -23,9 +23,6 @@ public enum AccountStatus {
 
     @JsonCreator
     public static AccountStatus fromString(String accountStatus) {
-        return Arrays.stream(AccountStatus.values())
-                .filter(status -> status.name().equals(accountStatus))
-                .findFirst()
-                .orElse(null);
+        return accountStatus != null ? AccountStatus.valueOf(accountStatus.toUpperCase()) : null;
     }
 }

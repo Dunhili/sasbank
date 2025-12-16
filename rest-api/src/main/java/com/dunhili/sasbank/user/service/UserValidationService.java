@@ -23,6 +23,11 @@ public class UserValidationService {
 
     private static final Pattern SSN_PATTERN = Pattern.compile("^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0000)\\d{4}$");
 
+    /**
+     * Validates the given user data.
+     * @param user User data to validate
+     * @return List of validation errors, empty list if the user data is valid.
+     */
     public List<ValidationError> validateUser(User user) {
         List<ValidationError> errors = new ArrayList<>();
 
@@ -34,6 +39,9 @@ public class UserValidationService {
         }
         if (!hasOnePrimaryPhone(user.getPhoneNumbers())) {
             errors.add(new ValidationError(ValidationMessages.USER_EXACTLY_ONE_PRIMARY_PHONE));
+        }
+        if (user.getRoles().isEmpty()) {
+            errors.add(new ValidationError(ValidationMessages.USER_ONE_ROLE_MUST_BE_PROVIDED));
         }
         return errors;
     }
