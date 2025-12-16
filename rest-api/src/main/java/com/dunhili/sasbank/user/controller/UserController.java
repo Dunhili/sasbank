@@ -5,7 +5,6 @@ import com.dunhili.sasbank.common.dto.ApiResponse;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
