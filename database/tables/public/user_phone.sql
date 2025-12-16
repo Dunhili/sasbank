@@ -12,3 +12,5 @@ CREATE TABLE public.user_phone (
 
 ALTER TABLE public.user_phone ADD CONSTRAINT fk_user_id_user_phone
 FOREIGN KEY (user_id) REFERENCES public.user_app(id) ON DELETE CASCADE;
+
+CREATE INDEX user_phone_user_id_idx ON public.user_phone (user_id);
