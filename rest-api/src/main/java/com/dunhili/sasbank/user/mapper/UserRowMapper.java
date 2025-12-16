@@ -33,7 +33,7 @@ public class UserRowMapper extends BaseMapper implements RowMapper<User> {
         user.setGender(Gender.fromString(rs.getString("gender")));
         user.setEmailAddress(rs.getString("email_address"));
         user.setSsn(rs.getString("ssn"));
-        user.setBirthday(rs.getDate("birthday").toLocalDate());
+        user.setBirthday(mapDate(rs, "birthday"));
         user.setStatus(AccountStatus.fromString(rs.getString("status")));
         mapAuditRows(user, rs);
         return user;

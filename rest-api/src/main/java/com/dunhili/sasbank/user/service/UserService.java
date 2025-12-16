@@ -6,6 +6,7 @@ import com.dunhili.sasbank.common.exception.ApiServiceException;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
+import com.dunhili.sasbank.user.enums.UserRole;
 import com.dunhili.sasbank.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class UserService {
             throw new ApiServiceException(ValidationMessages.USER_NOT_FOUND, 404, userId.toString());
         }
 
+        user.setRoles(getUserRoles(userId));
         user.setAddresses(userRepository.findAddressesByUserId(userId));
         user.setPhoneNumbers(userRepository.findPhoneNumbersByUserId(userId));
         return user;
@@ -71,6 +73,7 @@ public class UserService {
 
         // create user first to get the FK
         UUID userId = userRepository.createUser(user);
+        userRepository.createRoles(userId, user.getRoles());
 
         // next create the addresses (if there are any)
         if (!CollectionUtils.isEmpty(user.getAddresses())) {
@@ -107,12 +110,46 @@ public class UserService {
             userRepository.updateUser(user);
         }
 
+        updateRoles(user, existingUser);
         updateAddresses(user, existingUser);
         updatePhoneNumbers(user, existingUser);
 
         return userId;
     }
 
+    /**
+     * Updates the roles for the user.
+     * @param user User data to update.
+     * @param existingUser Existing user data.
+     */
+    private void updateRoles(User user, User existingUser) {
+        UUID userId = existingUser.getId();
+        if (user.getRoles() == null) {
+            user.setRoles(new ArrayList<>());
+        }
+        if (existingUser.getRoles() == null) {
+            existingUser.setRoles(new ArrayList<>());
+        }
+
+        Set<UserRole> givenRoles = new HashSet<>(user.getRoles());
+        Set<UserRole> existingRoles = new HashSet<>(existingUser.getRoles());
+
+        List<UserRole> rolesToAdd = givenRoles.stream().filter(role -> !existingRoles.contains(role)).toList();
+        List<UserRole> rolesToDelete = existingRoles.stream().filter(role -> !givenRoles.contains(role)).toList();
+
+        if (!rolesToAdd.isEmpty()) {
+            userRepository.createRoles(userId, rolesToAdd);
+        }
+        if (!rolesToDelete.isEmpty()) {
+            userRepository.deleteUserRoles(userId, rolesToDelete);
+        }
+    }
+
+    /**
+     * Updates the addresses for the given user.
+     * @param user User data to update.
+     * @param existingUser Existing user data.
+     */
     private void updateAddresses(User user, User existingUser) {
         UUID userId = existingUser.getId();
         if (user.getAddresses() == null) {
@@ -164,6 +201,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Updates the phone numbers for the given user.
+     * @param user User data to update.
+     * @param existingUser Existing user data.
+     */
     private void updatePhoneNumbers(User user, User existingUser) {
         UUID userId = existingUser.getId();
         if (user.getPhoneNumbers() == null) {
@@ -234,5 +276,14 @@ public class UserService {
      */
     public boolean isUserExists(UUID userId) {
         return userRepository.userExists(userId);
+    }
+
+    /**
+     * Returns a list of roles assigned to the given user.
+     * @param userId ID of the user to retrieve roles for.
+     * @return List of roles assigned to the given user.
+     */
+    public List<UserRole> getUserRoles(UUID userId) {
+        return userRepository.getUserRoles(userId);
     }
 }

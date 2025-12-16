@@ -1,11 +1,14 @@
 package com.dunhili.sasbank.user.repository;
 
+import com.dunhili.sasbank.auth.utils.AuthUtils;
 import com.dunhili.sasbank.common.BaseRepository;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
+import com.dunhili.sasbank.user.enums.UserRole;
 import com.dunhili.sasbank.user.mapper.UserAddressRowMapper;
 import com.dunhili.sasbank.user.mapper.UserPhoneRowMapper;
+import com.dunhili.sasbank.user.mapper.UserRoleRowMapper;
 import com.dunhili.sasbank.user.mapper.UserRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -84,6 +87,10 @@ public class UserRepository extends BaseRepository {
         return userId;
     }
 
+    /**
+     * Creates new addresses for the user with the given ID.
+     * @param addresses List of addresses to create.
+     */
     public void createAddresses(List<UserAddress> addresses) {
         String sql = """
             INSERT INTO public.user_address(user_id, address_line_1, address_line_2, address_line_3, state, city, zipcode, country, is_primary, created_at, created_by, updated_at, updated_by)
@@ -97,6 +104,10 @@ public class UserRepository extends BaseRepository {
         batchUpdate(sql, batch);
     }
 
+    /**
+     * Creates new phone numbers for the user with the given ID.
+     * @param phoneNumbers List of phone numbers to create.
+     */
     public void createPhoneNumbers(List<UserPhone> phoneNumbers) {
         String sql = """
             INSERT INTO public.user_phone(user_id, phone_number, phone_type, is_primary, created_at, created_by, updated_at, updated_by)
@@ -105,6 +116,27 @@ public class UserRepository extends BaseRepository {
 
         List<Map<String, Object>> batch = phoneNumbers.stream()
                 .map(phoneNumber -> getPhoneNumberParams(phoneNumber, true))
+                .toList();
+
+        batchUpdate(sql, batch);
+    }
+
+    /**
+     * Creates new roles for the user with the given ID.
+     * @param userId ID of the user to create roles for.
+     * @param roles List of roles to create.
+     */
+    public void createRoles(UUID userId, List<UserRole> roles) {
+        String sql = """
+            INSERT INTO public.user_role(user_id, user_role, created_at, created_by)
+            VALUES (:userId, :userRole, :createdAt, :createdBy)
+        """;
+
+        Date now = new Date();
+        String createdBy = AuthUtils.getCurrentUser();
+
+        List<Map<String, Object>> batch = roles.stream()
+                .map(role -> getUserRoleParams(role, userId, now, createdBy))
                 .toList();
 
         batchUpdate(sql, batch);
@@ -224,6 +256,20 @@ public class UserRepository extends BaseRepository {
     }
 
     /**
+     * Deletes the user roles with the given roles.
+     * @param userId ID of the user to delete the roles for.
+     * @param roles List of roles to delete.
+     */
+    public void deleteUserRoles(UUID userId, List<UserRole> roles) {
+        String sql = """
+            DELETE FROM public.user_role WHERE user_role IN (:roles) AND user_id = :userId
+        """;
+
+        List<String> roleStrings = roles.stream().map(Enum::name).toList();
+        delete(sql, Map.of("roles", roleStrings, "userId", userId));
+    }
+
+    /**
      * Checks if a user with the given ID exists in the database.
      * @param userId ID of the user to check.
      * @return True if a user with the given ID exists, false otherwise.
@@ -234,6 +280,19 @@ public class UserRepository extends BaseRepository {
         """;
 
         return exists(sql, getUserParamMap(userId));
+    }
+
+    /**
+     * Retrieves all roles assigned to the user with the given ID.
+     * @param userId ID of the user to retrieve roles for.
+     * @return List of roles assigned to the user with the given ID.
+     */
+    public List<UserRole> getUserRoles(UUID userId) {
+        String sql = """
+            SELECT user_role FROM public.user_role WHERE user_id = :userId
+        """;
+
+        return queryAll(sql, getUserParamMap(userId), UserRoleRowMapper.INSTANCE);
     }
 
     /**
@@ -306,6 +365,23 @@ public class UserRepository extends BaseRepository {
         params.put("isPrimary", phoneNumber.isPrimary());
         addAuditParams(params, isCreate);
 
+        return params;
+    }
+
+    /**
+     * Creates a parameter map for the given role.
+     * @param role role to add
+     * @param userId user to create the role for
+     * @param now current date
+     * @param createdBy user creating the role
+     * @return parameter map for the given role
+     */
+    private Map<String, Object> getUserRoleParams(UserRole role, UUID userId, Date now, String createdBy) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userRole", role.name());
+        params.put("userId", userId);
+        params.put("createdAt", now);
+        params.put("createdBy", createdBy);
         return params;
     }
 }
