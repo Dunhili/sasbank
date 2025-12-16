@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Base repository class that all repositories should extend.
@@ -79,6 +76,15 @@ public abstract class BaseRepository {
     protected boolean exists(String sql, Map<String, ?> params) {
         Boolean result = jdbcTemplate.queryForObject(sql, params, Boolean.class);
         return result != null && result;
+    }
+
+    /**
+     * Creates a parameter map for the given user ID.
+     * @param userId ID of the user to create a parameter map for.
+     * @return Parameter map for the given user ID.
+     */
+    protected Map<String, UUID> getUserParamMap(UUID userId) {
+        return Map.of("userId", userId);
     }
 
     /**

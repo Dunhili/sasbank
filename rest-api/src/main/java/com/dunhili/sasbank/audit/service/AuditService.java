@@ -2,6 +2,8 @@ package com.dunhili.sasbank.audit.service;
 
 import com.dunhili.sasbank.audit.dto.AuditModelWrapper;
 import com.dunhili.sasbank.audit.repository.AuditRepository;
+import com.dunhili.sasbank.auth.dto.UserLogin;
+import com.dunhili.sasbank.auth.dto.UserRole;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
@@ -45,5 +47,23 @@ public class AuditService {
      */
     public List<AuditModelWrapper<UserPhone>> getAuditsForPhone(UUID userId) {
         return auditRepository.findUserPhoneAuditRowsByPhoneId(userId);
+    }
+
+    /**
+     * Returns a list of audit rows for the given login ID.
+     * @param userLoginId ID of the login to retrieve audit rows for.
+     * @return List of audit rows for the given login ID.
+     */
+    public List<AuditModelWrapper<UserLogin>> getAuditsForLogin(UUID userLoginId) {
+        return auditRepository.findUserLoginAuditRowsByLoginId(userLoginId);
+    }
+
+    /**
+     * Returns a list of audit rows for the given user role ID.
+     * @param userId ID of the user role to retrieve audit rows for.
+     * @return List of audit rows for the given user role ID.
+     */
+    public List<AuditModelWrapper<UserRole>> getAuditsForRole(UUID userId) {
+        return auditRepository.findUserRoleAuditRowsByPhoneId(userId);
     }
 }

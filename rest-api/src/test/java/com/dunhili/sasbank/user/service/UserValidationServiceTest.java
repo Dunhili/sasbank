@@ -1,11 +1,7 @@
 package com.dunhili.sasbank.user.service;
 
-import com.dunhili.sasbank.common.dto.ValidationError;
-import com.dunhili.sasbank.common.enums.ValidationMessages;
-import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.dto.UserPhone;
-import com.dunhili.sasbank.user.enums.UserRole;
 import com.dunhili.sasbank.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -112,22 +108,5 @@ public class UserValidationServiceTest {
         // two primary addresses
         phoneNumber1.setPrimary(true);
         assertFalse(userValidationService.hasOnePrimaryPhone(phoneNumbers));
-    }
-
-    /**
-     * Tests the {@link UserValidationService#validateUser(User)} method for the roles.
-     */
-    @Test
-    public void validateUserRolesTest() {
-        User user = new User();
-        user.setRoles(new ArrayList<>());
-
-        List<ValidationError> errors = userValidationService.validateUser(user);
-        assertFalse(errors.isEmpty());
-        assertEquals(ValidationMessages.USER_ONE_ROLE_MUST_BE_PROVIDED.getMessage(), errors.getFirst().getErrorMessage());
-
-        user.getRoles().add(UserRole.USER);
-        errors = userValidationService.validateUser(user);
-        assertTrue(errors.isEmpty());
     }
 }

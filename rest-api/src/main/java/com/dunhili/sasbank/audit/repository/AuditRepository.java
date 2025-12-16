@@ -1,9 +1,9 @@
 package com.dunhili.sasbank.audit.repository;
 
 import com.dunhili.sasbank.audit.dto.AuditModelWrapper;
-import com.dunhili.sasbank.audit.mapper.UserAddressAuditModelRowMapper;
-import com.dunhili.sasbank.audit.mapper.UserAuditModelRowMapper;
-import com.dunhili.sasbank.audit.mapper.UserPhoneAuditModelRowMapper;
+import com.dunhili.sasbank.audit.mapper.*;
+import com.dunhili.sasbank.auth.dto.UserLogin;
+import com.dunhili.sasbank.auth.dto.UserRole;
 import com.dunhili.sasbank.common.BaseRepository;
 import com.dunhili.sasbank.user.dto.User;
 import com.dunhili.sasbank.user.dto.UserAddress;
@@ -68,5 +68,35 @@ public class AuditRepository extends BaseRepository {
         """;
 
         return queryAll(sql, Map.of("phoneId", phoneId), UserPhoneAuditModelRowMapper.INSTANCE);
+    }
+
+    /**
+     * Retrieves audit rows for a user login with the given ID.
+     * @param loginId ID of the user login to retrieve audit rows for.
+     * @return List of audit rows for the given user login ID.
+     */
+    public List<AuditModelWrapper<UserLogin>> findUserLoginAuditRowsByLoginId(UUID loginId) {
+        String sql = """
+            SELECT *
+            FROM audit.user_login_aud
+            WHERE user_login_aud = :loginId
+        """;
+
+        return queryAll(sql, Map.of("loginId", loginId), UserLoginAuditModelRowMapper.INSTANCE);
+    }
+
+    /**
+     * Retrieves audit rows for a user roles with the given ID.
+     * @param userId ID of the user roles to retrieve audit rows for.
+     * @return List of audit rows for the given user roles ID.
+     */
+    public List<AuditModelWrapper<UserRole>> findUserRoleAuditRowsByPhoneId(UUID userId) {
+        String sql = """
+            SELECT *
+            FROM audit.user_role_aud
+            WHERE user_id = :userId
+        """;
+
+        return queryAll(sql, Map.of("userId", userId), UserRoleAuditModelRowMapper.INSTANCE);
     }
 }

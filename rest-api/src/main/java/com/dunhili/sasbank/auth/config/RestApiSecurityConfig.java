@@ -1,6 +1,6 @@
 package com.dunhili.sasbank.auth.config;
 
-import com.dunhili.sasbank.user.enums.UserRole;
+import com.dunhili.sasbank.auth.enums.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -30,7 +30,7 @@ public class RestApiSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/restapi/**")
-                    .hasAnyRole(UserRole.USER.name(), UserRole.MANAGER.name(), UserRole.ADMIN.name())
+                    .hasAnyRole(Role.USER.name(), Role.MANAGER.name(), Role.ADMIN.name())
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults());

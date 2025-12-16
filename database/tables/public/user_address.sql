@@ -16,4 +16,4 @@ CREATE TABLE public.user_address (
 );
 
 ALTER TABLE public.user_address ADD CONSTRAINT fk_user_id_user_address
-FOREIGN KEY (user_id) REFERENCES public.user_app(id);
+FOREIGN KEY (user_id) REFERENCES public.user_app(id) ON DELETE CASCADE;

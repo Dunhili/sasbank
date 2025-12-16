@@ -1,4 +1,4 @@
-package com.dunhili.sasbank.user.enums;
+package com.dunhili.sasbank.auth.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -11,14 +11,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  *     <li>Admin</li>
  * </ul>
  */
-public enum UserRole {
+public enum Role {
     USER,
     MANAGER,
     SUPPORT,
     ADMIN;
 
     @JsonCreator
-    public static UserRole fromString(String role) {
-        return role != null ? UserRole.valueOf(role.toUpperCase()) : null;
+    public static Role fromString(String role) {
+        return role != null ? Role.valueOf(role.toUpperCase()) : null;
     }
 }

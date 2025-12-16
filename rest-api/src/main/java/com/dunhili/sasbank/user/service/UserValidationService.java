@@ -40,9 +40,6 @@ public class UserValidationService {
         if (!hasOnePrimaryPhone(user.getPhoneNumbers())) {
             errors.add(new ValidationError(ValidationMessages.USER_EXACTLY_ONE_PRIMARY_PHONE));
         }
-        if (user.getRoles().isEmpty()) {
-            errors.add(new ValidationError(ValidationMessages.USER_ONE_ROLE_MUST_BE_PROVIDED));
-        }
         return errors;
     }
 

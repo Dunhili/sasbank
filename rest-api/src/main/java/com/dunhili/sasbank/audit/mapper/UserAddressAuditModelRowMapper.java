@@ -6,6 +6,7 @@ import com.dunhili.sasbank.user.dto.UserAddress;
 import com.dunhili.sasbank.user.mapper.UserAddressRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -23,7 +24,7 @@ public class UserAddressAuditModelRowMapper extends BaseMapper implements RowMap
      * @throws SQLException if there is an error getting values from the result set.
      */
     @Override
-    public AuditModelWrapper<UserAddress> mapRow(java.sql.ResultSet rs, int rowNum) throws SQLException {
+    public AuditModelWrapper<UserAddress> mapRow(ResultSet rs, int rowNum) throws SQLException {
         return mapAuditRow(rs, rowNum, UserAddressRowMapper.INSTANCE);
     }
 }

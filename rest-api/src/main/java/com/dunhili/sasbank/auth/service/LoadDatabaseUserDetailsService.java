@@ -1,8 +1,6 @@
 package com.dunhili.sasbank.auth.service;
 
 import com.dunhili.sasbank.auth.dto.UserLogin;
-import com.dunhili.sasbank.user.enums.UserRole;
-import com.dunhili.sasbank.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,6 @@ import java.util.List;
 public class LoadDatabaseUserDetailsService implements UserDetailsService {
 
     private final UserLoginService userLoginService;
-    private final UserService userService;
 
     /**
      * Loads the user details from the database based on the given username.
@@ -34,7 +31,10 @@ public class LoadDatabaseUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        List<String> userRoles = userService.getUserRoles(login.getUserId()).stream().map(UserRole::name).toList();
+        List<String> userRoles = userLoginService.getUserRoles(login.getUserId())
+                .stream()
+                .map(role -> role.getUserRole().name())
+                .toList();
 
         return User.withUsername(login.getUsername())
                 .password(login.getPassword())
