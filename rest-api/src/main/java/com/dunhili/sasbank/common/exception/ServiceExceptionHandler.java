@@ -3,6 +3,7 @@ package com.dunhili.sasbank.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,6 +34,27 @@ public class ServiceExceptionHandler {
         );
 
         return ResponseEntity.status(e.getHttpStatus()).body(response);
+    }
+
+    /**
+     * Handles authorization denied exceptions thrown by the service layer.
+     * @param e Exception thrown by the service layer.
+     * @return API error response containing the error details.
+     */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiServiceErrorResponse> handleApiException(AuthorizationDeniedException e) {
+        log.error(e.getMessage(), e);
+
+        ApiServiceErrorResponse response = new ApiServiceErrorResponse(
+                403,
+                "UNAUTHORIZED",
+                "User is not authorized to perform this action.",
+                null,
+                MDC.get("requestId"),
+                new Date()
+        );
+
+        return ResponseEntity.status(403).body(response);
     }
 
     /**

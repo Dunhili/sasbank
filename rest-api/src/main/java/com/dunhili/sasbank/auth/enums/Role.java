@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * Enum representing the different roles a user can have.
  * <ul>
  *     <li>User</li>
+ *     <li>Customer</li>
  *     <li>Manager</li>
  *     <li>Support</li>
  *     <li>Admin</li>
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  */
 public enum Role {
     USER,
+    CUSTOMER,
     MANAGER,
     SUPPORT,
     ADMIN;

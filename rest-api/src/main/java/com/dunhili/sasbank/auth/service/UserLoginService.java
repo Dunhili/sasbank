@@ -5,9 +5,12 @@ import com.dunhili.sasbank.auth.dto.UserRole;
 import com.dunhili.sasbank.auth.enums.Role;
 import com.dunhili.sasbank.auth.repository.UserLoginRepository;
 import com.dunhili.sasbank.common.dto.ValidationError;
+import com.dunhili.sasbank.common.enums.ValidationMessages;
 import com.dunhili.sasbank.common.exception.ApiServiceException;
+import com.dunhili.sasbank.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ public class UserLoginService {
 
     private final UserLoginValidationService userLoginValidationService;
     private final UserLoginRepository userLoginRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -54,8 +58,12 @@ public class UserLoginService {
      * @param user User data to create or update.
      */
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void createOrUpdateUserLogin(UserLogin user) {
         List<ValidationError> errors = userLoginValidationService.validateUserLogin(user);
+        if (user.getUserId() != null && !userService.isUserExists(user.getUserId())) {
+            errors.add(new ValidationError(ValidationMessages.USER_NOT_FOUND, user.getUserId().toString()));
+        }
         if (!errors.isEmpty()) {
             throw new ApiServiceException("INVALID_USER_LOGIN", "The following validation errors were found.", 400, errors);
         }
@@ -108,7 +116,8 @@ public class UserLoginService {
      * @param user User data to update.
      * @param existingUser Existing user data.
      */
-    private void updateRoles(UserLogin user, UserLogin existingUser) {
+    @Transactional
+    protected void updateRoles(UserLogin user, UserLogin existingUser) {
         if (user.getRoles() == null) {
             user.setRoles(new ArrayList<>());
         }
@@ -135,5 +144,17 @@ public class UserLoginService {
         if (!rolesToDelete.isEmpty()) {
             userLoginRepository.deleteUserRoles(rolesToDelete);
         }
+    }
+
+    /**
+     * Returns true if the user with the given ID has the given role, false otherwise.
+     * @param userId ID of the user to check.
+     * @param role Role to check for.
+     * @return True if the user has the given role, false otherwise.
+     */
+    public boolean userHasRole(UUID userId, Role role) {
+        return userLoginRepository.findUserRolesByUserId(userId)
+                .stream()
+                .anyMatch(userRole -> userRole.getUserRole().equals(role));
     }
 }
