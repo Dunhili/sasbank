@@ -26,7 +26,7 @@ public class LoginController {
      */
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createLogin(@RequestBody UserLogin login) {
-        userLoginService.createLogin(login);
+        userLoginService.createOrUpdateUserLogin(login);
         return ResponseEntity.ok().build();
     }
 }

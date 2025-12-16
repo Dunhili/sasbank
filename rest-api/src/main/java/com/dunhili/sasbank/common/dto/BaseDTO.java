@@ -1,5 +1,6 @@
 package com.dunhili.sasbank.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,16 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 public abstract class BaseDTO {
     private UUID id;
+
+    @JsonIgnore
     private Date createdAt;
+
+    @JsonIgnore
     private String createdBy;
+
+    @JsonIgnore
     private Date updatedAt;
+
+    @JsonIgnore
     private String updatedBy;
 }
